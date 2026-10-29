@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KIC Message Board</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <main class="page">
+      <header class="page-header">
+        <p class="eyebrow">KIC Web Application Starter</p>
+        <h1>Message Board</h1>
+        <p class="intro">Read messages and send your own to the server.</p>
+      </header>
+
+      <section aria-labelledby="form-heading">
+        <h2 id="form-heading">Leave a message</h2>
+        <form id="message-form" class="message-form" action="/api/messages" method="post">
+          <div class="form-field">
+            <label for="author">Your name</label>
+            <input id="author" name="author" type="text" autocomplete="name" maxlength="80" required>
+          </div>
+          <div class="form-field">
+            <label for="text">Your message</label>
+            <textarea id="text" name="text" rows="4" maxlength="1000" aria-describedby="message-help" required></textarea>
+            <p id="message-help" class="field-help">Up to 1,000 characters. Messages reset when the server restarts.</p>
+          </div>
+          <button id="send-message" type="submit" disabled>Send message</button>
+          <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
+        </form>
+        <noscript><p>Please enable JavaScript to load and submit messages.</p></noscript>
+      </section>
+
+      <section aria-labelledby="messages-heading">
+        <div class="section-heading">
+          <h2 id="messages-heading">Latest messages</h2>
+          <span id="message-count" class="message-count" aria-live="polite"></span>
+        </div>
+        <p id="status" class="status" role="status">Loading messages...</p>
+        <ul id="messages" class="messages" aria-label="Messages"></ul>
+      </section>
+    </main>
+  </body>
+</html>
