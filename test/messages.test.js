@@ -1,9 +1,10 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { createServer } = require('../server');
+const { createMemoryStore } = require('../message-store');
 
 async function startServer(t) {
-  const server = createServer();
+  const server = createServer({ store: createMemoryStore() });
   await new Promise((resolve, reject) => {
     server.once('error', reject);
     server.listen(0, '127.0.0.1', resolve);

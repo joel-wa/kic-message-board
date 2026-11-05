@@ -2,6 +2,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const { createMessageStore } = require('./message-store');
 
 const PORT = process.env.PORT || 3000;
 const publicDirectory = path.join(__dirname, 'public');
@@ -21,22 +22,21 @@ const contentTypes = {
   '.js': 'text/javascript; charset=utf-8'
 };
 
-function createServer() {
-  // This array belongs to the server. Nothing is saved to a file or database.
-  // Creating/restarting the server restores these three sample messages.
-  const messages = [
-    { id: 1, author: 'Aki', text: 'Hello from the KIC lecture!' },
-    { id: 2, author: 'Ren', text: 'I am learning how the frontend talks to the backend.' },
-    { id: 3, author: 'Mina', text: 'This message came from the server API.' }
-  ];
-  let nextId = 4;
+function createServer({ store = createMessageStore() } = {}) {
+  function storageError(response) {
+    sendJson(response, 503, { error: 'Messages are temporarily unavailable. Please try again.' });
+  }
 
-  return http.createServer((request, response) => {
+  return http.createServer(async (request, response) => {
     const requestUrl = new URL(request.url, `http://${request.headers.host}`);
 
-    // Return the in-memory messages as JSON for the frontend.
+    // Read persistent messages through the server-side store.
     if (request.method === 'GET' && requestUrl.pathname === '/api/messages') {
-      sendJson(response, 200, messages);
+      try {
+        sendJson(response, 200, await store.list());
+      } catch {
+        storageError(response);
+      }
       return;
     }
 
@@ -62,7 +62,7 @@ function createServer() {
         // Discard excess data instead of storing an unlimited request body.
         if (bodyBytes <= MAX_BODY_BYTES) chunks.push(chunk);
       });
-      request.on('end', () => {
+      request.on('end', async () => {
         if (bodyBytes > MAX_BODY_BYTES) {
           sendJson(response, 413, { error: 'The message is too large.' });
           return;
@@ -91,9 +91,12 @@ function createServer() {
           return;
         }
 
-        const message = { id: nextId++, author, text };
-        messages.push(message);
-        sendJson(response, 201, message);
+        try {
+          const message = await store.add({ author, text });
+          sendJson(response, 201, message);
+        } catch {
+          storageError(response);
+        }
       });
       request.on('error', () => {
         if (!response.headersSent && !response.destroyed) {
@@ -139,13 +142,13 @@ function createServer() {
       response.writeHead(200, { 'Content-Type': contentType });
       response.end(fileContents);
     });
-    });
-  }
+  });
+}
 
-  // Importing createServer in the tests does not start a second server.
-  if (require.main === module) {
-    createServer().listen(PORT, () => {
-      console.log(`KIC Web Application Starter is running at http://localhost:${PORT}`);
+// Importing createServer in the tests does not start a second server.
+if (require.main === module) {
+  createServer().listen(PORT, () => {
+    console.log(`KIC Web Application Starter is running at http://localhost:${PORT}`);
   });
 }
 
