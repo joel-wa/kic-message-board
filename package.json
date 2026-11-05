@@ -1,1 +1,16 @@
-{"name":"little-current","private":true,"version":"0.1.0","scripts":{"start":"node server.js","test":"node --test"}}
+{
+  "name": "little-current",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "pretest": "node scripts/ensure-dependencies.cjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "pg": "8.23.1"
+  }
+}

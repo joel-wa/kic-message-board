@@ -73,4 +73,4 @@
  #drawDialog .templates{margin-top:16px;margin-bottom:12px}#drawDialog .paint-modes{margin-top:12px}#drawDialog .canvas-wrap{margin-top:12px}#drawDialog .hint{margin-bottom:10px}
 }
 
-@media(min-width:1000px){#pond[data-toy=food],#pond[data-toy=bomb],#pond[data-toy=food] .animal button,#pond[data-toy=bomb] .animal button{cursor:crosshair}}
+@media(min-width:1000px){#pond[data-active-toy=food],#pond[data-active-toy=bomb],#pond[data-active-toy=food] .animal button,#pond[data-active-toy=bomb] .animal button{cursor:crosshair}}
