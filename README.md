@@ -15,10 +15,11 @@ Open http://localhost:3017. `PORT` configures the server port; `HOST` optionally
 
 ## Hosting
 
-The Render web service builds with `npm test` and starts with `npm start`. Pushes to `main` deploy automatically.
+The Render web service builds with `npm test` and starts with `npm start`. Deploy the latest `main` commit from Render. Public repository URL services require a manual deploy; automatic deploys require a connected Git provider.
 
 This prototype stores animals and messages in `data.json` on the server. Render's free filesystem is temporary: redeploying or restarting the service can reset this data. Supabase persistence is planned. Browser ownership is a prototype convenience, without authentication.
 
 Local state and backups are excluded from Git. Production begins with an empty pond.
 
 Animal artwork, pond backgrounds and interface illustrations are generated pencil-and-watercolor assets. Font licenses are included beside their files in `public/art`.
+
