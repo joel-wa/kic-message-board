@@ -1,0 +1,220 @@
+{
+  "fish": {
+    "src": "/art/fish-outline.png",
+    "mask": "/art/fish-regions.png",
+    "parts": [
+      {
+        "id": "1",
+        "name": "Face",
+        "x": 435,
+        "y": 197,
+        "size": 17899
+      },
+      {
+        "id": "2",
+        "name": "Stripe 1",
+        "x": 267,
+        "y": 195,
+        "size": 10316
+      },
+      {
+        "id": "3",
+        "name": "Stripe 2",
+        "x": 336,
+        "y": 191,
+        "size": 9917
+      },
+      {
+        "id": "4",
+        "name": "Tail",
+        "x": 118,
+        "y": 202,
+        "size": 7735
+      },
+      {
+        "id": "5",
+        "name": "Stripe 3",
+        "x": 201,
+        "y": 196,
+        "size": 6050
+      },
+      {
+        "id": "6",
+        "name": "Top fin",
+        "x": 296,
+        "y": 69,
+        "size": 3065
+      },
+      {
+        "id": "7",
+        "name": "Side fin",
+        "x": 350,
+        "y": 246,
+        "size": 2179
+      }
+    ]
+  },
+  "cat": {
+    "src": "/art/cat-outline.png",
+    "mask": "/art/cat-regions.png",
+    "parts": [
+      {
+        "id": "1",
+        "name": "Body",
+        "x": 333,
+        "y": 187,
+        "size": 35894
+      },
+      {
+        "id": "2",
+        "name": "Belly",
+        "x": 338,
+        "y": 264,
+        "size": 8782
+      },
+      {
+        "id": "3",
+        "name": "Tail",
+        "x": 170,
+        "y": 180,
+        "size": 4066
+      }
+    ]
+  },
+  "frog": {
+    "src": "/art/frog-outline.png",
+    "mask": "/art/frog-regions.png",
+    "parts": [
+      {
+        "id": "1",
+        "name": "Body",
+        "x": 300,
+        "y": 177,
+        "size": 39422
+      },
+      {
+        "id": "2",
+        "name": "Belly",
+        "x": 298,
+        "y": 256,
+        "size": 14633
+      },
+      {
+        "id": "3",
+        "name": "Right cheek",
+        "x": 397,
+        "y": 155,
+        "size": 1472
+      },
+      {
+        "id": "4",
+        "name": "Left cheek",
+        "x": 203,
+        "y": 157,
+        "size": 957
+      }
+    ]
+  },
+  "duck": {
+    "src": "/art/duck-outline.png",
+    "mask": "/art/duck-regions.png",
+    "parts": [
+      {
+        "id": "1",
+        "name": "Body",
+        "x": 303,
+        "y": 189,
+        "size": 37220
+      },
+      {
+        "id": "2",
+        "name": "Wing",
+        "x": 269,
+        "y": 224,
+        "size": 5007
+      },
+      {
+        "id": "3",
+        "name": "Upper beak",
+        "x": 434,
+        "y": 114,
+        "size": 697
+      },
+      {
+        "id": "4",
+        "name": "Lower beak",
+        "x": 431,
+        "y": 137,
+        "size": 223
+      }
+    ]
+  },
+  "jelly": {
+    "src": "/art/jelly-outline.png",
+    "mask": "/art/jelly-regions.png",
+    "parts": [
+      {
+        "id": "1",
+        "name": "Body",
+        "x": 304,
+        "y": 128,
+        "size": 27086
+      },
+      {
+        "id": "2",
+        "name": "Tentacle 1",
+        "x": 269,
+        "y": 256,
+        "size": 1697
+      },
+      {
+        "id": "3",
+        "name": "Tentacle 2",
+        "x": 209,
+        "y": 239,
+        "size": 1626
+      },
+      {
+        "id": "4",
+        "name": "Tentacle 3",
+        "x": 333,
+        "y": 260,
+        "size": 1533
+      },
+      {
+        "id": "5",
+        "name": "Tentacle 4",
+        "x": 390,
+        "y": 246,
+        "size": 1457
+      }
+    ]
+  },
+  "blob": {
+    "src": "/art/blob-outline.png",
+    "mask": "/art/blob-regions.png",
+    "parts": [
+      {
+        "id": "1",
+        "name": "Body",
+        "x": 298,
+        "y": 190,
+        "size": 58302
+      },
+      {
+        "id": "2",
+        "name": "Right cheek",
+        "x": 388,
+        "y": 170,
+        "size": 1694
+      },
+      {
+        "id": "3",
+        "name": "Left cheek",
+        "x": 211,
+        "y": 170,
+        "size": 1693
+      }
+    ]
+  }
+}

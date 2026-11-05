@@ -1,46 +1,17 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>KIC Message Board</title>
-    <link rel="stylesheet" href="/style.css">
-    <script src="/app.js" defer></script>
-  </head>
-  <body>
-    <main class="page">
-      <header class="page-header">
-        <p class="eyebrow">KIC Web Application Starter</p>
-        <h1>Message Board</h1>
-        <p class="intro">Read messages and send your own to the server.</p>
-      </header>
-
-      <section aria-labelledby="form-heading">
-        <h2 id="form-heading">Leave a message</h2>
-        <form id="message-form" class="message-form" action="/api/messages" method="post">
-          <div class="form-field">
-            <label for="author">Your name</label>
-            <input id="author" name="author" type="text" autocomplete="name" maxlength="80" required>
-          </div>
-          <div class="form-field">
-            <label for="text">Your message</label>
-            <textarea id="text" name="text" rows="4" maxlength="1000" aria-describedby="message-help" required></textarea>
-            <p id="message-help" class="field-help">Up to 1,000 characters. Messages reset when the server restarts.</p>
-          </div>
-          <button id="send-message" type="submit" disabled>Send message</button>
-          <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
-        </form>
-        <noscript><p>Please enable JavaScript to load and submit messages.</p></noscript>
-      </section>
-
-      <section aria-labelledby="messages-heading">
-        <div class="section-heading">
-          <h2 id="messages-heading">Latest messages</h2>
-          <span id="message-count" class="message-count" aria-live="polite"></span>
-        </div>
-        <p id="status" class="status" role="status">Loading messages...</p>
-        <ul id="messages" class="messages" aria-label="Messages"></ul>
-      </section>
-    </main>
-  </body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#fcf7eb"><title>Pop Pond · KIC community</title><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/mobile-ui.css"></head>
+<body data-view="pond">
+<header class="app-header"><a class="brand" href="/" aria-label="Pop Pond home"><img src="/art/ui-logo.png" alt="pop pond"><span>KIC community</span></a><img class="community-faces" src="/art/ui-members.png" alt="" aria-hidden="true"></header>
+<main class="app-main">
+<section id="pondView" class="view" aria-label="Community pond"><div class="community-status"><i id="connection"></i><span id="population">Joining the pond…</span><span class="status-sparks" aria-hidden="true">′</span></div>
+<section class="pond-shell" aria-label="Shared community pond"><div id="pond" tabindex="0" aria-label="Pond. Tap empty water to use the selected item, or press Enter."><div id="empty"><h2>A little pond.<br>A place for you.</h2><p>Pick an animal, add your colors,<br>and leave a little thought.</p><button id="firstDraw">Make the first animal ↗</button></div><div id="foodLayer" aria-hidden="true"></div><div id="animals"></div><div id="toyLayer" aria-hidden="true"></div><div id="placementGhost" class="placement-ghost" hidden aria-hidden="true"><img alt=""><span>Rest here</span></div><button id="cancelPlacement" class="cancel-placement" hidden>Cancel placement</button><button id="pause" class="pond-pause" aria-pressed="false" aria-label="Pause drifting">Ⅱ</button><span id="pondHelp" class="pond-help">Tap to pop · tap a bubble to reply</span></div><span id="totalPops" class="sr-only">0 glorious pop-outs</span></section>
+<section id="itemTray" class="item-tray" aria-label="Pond toys"><div class="toy-carousel"><button id="previousToy" class="toy-arrow" aria-label="Previous item">‹</button><div id="toySwipe" class="toy-swipe" tabindex="0" role="group" aria-label="Swipe left or right to choose hand, food or bubble bomb"><button class="toy-choice selected" data-toy="hand" aria-pressed="true"><img src="/art/ui-hand-icon.png" alt=""><span>Hand</span></button><button class="toy-choice" data-toy="food" aria-pressed="false"><img src="/art/ui-food-icon.png" alt=""><span>Food</span></button><button class="toy-choice" data-toy="bomb" aria-pressed="false"><img src="/art/ui-bomb-icon.png" alt=""><span>Bubble bomb</span></button></div><button id="nextToy" class="toy-arrow" aria-label="Next item">›</button></div><span id="toyStatus" class="sr-only" role="status"></span></section>
+</section>
+<section id="messageView" class="view list-view" hidden><p class="eyebrow">LITTLE CONVERSATIONS</p><h1>Messages from the pond</h1><p class="view-description">A person behind every doodle. Tap a note to say hello.</p><div id="feed" class="feed"></div></section>
+<section id="myView" class="view list-view" hidden><p class="eyebrow">YOUR LITTLE RESIDENTS</p><h1>My animals</h1><p class="view-description">The animals you’ve released from this browser.</p><button id="createAnimal" class="primary create-animal">＋ Make an animal</button><section id="recoverAnimal" class="recover-animal" hidden><label for="existingAnimal">Already made an animal?</label><p>Choose yours to use its voice again.</p><div><select id="existingAnimal" aria-label="Choose your existing animal"></select><button id="useExistingAnimal" type="button">Use this animal</button></div></section><div id="myAnimals" class="feed"></div></section>
+<form id="chatForm" class="chat-dock"><label for="chatText" id="chatIdentity">Your voice in the pond</label><div class="chat-input-row"><input id="chatText" maxlength="240" placeholder="Say something to the pond…" autocomplete="off" aria-label="Your animal’s speech bubble" required><button id="chatSend" type="submit" aria-label="Send message">↑</button></div><p id="chatError" class="chat-error" role="alert"></p></form>
+</main>
+<nav class="bottom-nav" aria-label="Main navigation"><button data-view="pond" aria-current="page"><img src="/art/ui-pond-icon.png" alt=""><span>Pond</span></button><button data-view="messages"><img src="/art/ui-messages-icon.png" alt=""><span>Messages</span></button><button data-view="my"><img src="/art/ui-animals-icon.png" alt=""><span>My animals</span></button></nav>
+<dialog id="drawDialog"><form id="drawForm"><div class="dialog-head"><div><p class="eyebrow">NEW RESIDENT</p><h2>Who’s moving in?</h2></div><button type="button" class="close" data-close="drawDialog" aria-label="Close drawing">×</button></div><p class="hint">Pick a shape, tap to color, then add your own little details.</p><div id="templates" class="templates" aria-label="Animal templates"></div><div class="paint-modes"><button id="fillMode" type="button" aria-pressed="true">◈ Tap to fill</button><button id="penMode" type="button" aria-pressed="false">✎ Doodle pen</button><span id="paintHelp">Choose a color, then tap a part.</span></div><div class="canvas-wrap"><canvas id="drawing" width="600" height="360" aria-label="Draw your animal here"></canvas><span id="drawHint">draw your little creature here</span></div><div id="parts" class="parts" aria-label="Color animal parts"></div><div class="tools"><div id="colors" aria-label="Ink colors"></div><label class="brush">Pen <input id="brush" type="range" min="2" max="18" value="6" aria-label="Pen size"></label><button type="button" id="undo">Undo</button><button type="button" id="clear">Clear</button></div><label>Your name<input id="author" maxlength="32" placeholder="What should we call you?" required autocomplete="nickname"></label><textarea id="message" hidden maxlength="240"></textarea><span id="count" hidden></span><p id="drawError" class="error" role="alert"></p><button class="primary release" type="submit">Release into the pond ↗</button><p class="fine">Everyone can pop your animal. It always comes back.</p></form></dialog>
+<dialog id="noteDialog"><div class="dialog-head"><p class="eyebrow">A NOTE FROM THE POND</p><button class="close" data-close="noteDialog" aria-label="Close message">×</button></div><div id="noteBody"></div><div id="replies"></div><form id="replyForm"><label>Leave a reply<textarea id="replyText" maxlength="240" required placeholder="Say something back…" rows="2"></textarea></label><label>Your name<input id="replyAuthor" maxlength="32" required placeholder="Your name"></label><p id="replyError" class="error" role="alert"></p><button class="primary" type="submit">Send reply ↗</button></form></dialog>
+<span id="popStatus" class="sr-only" role="status"></span><div id="toast" role="status"></div><script src="/templates.js"></script><script src="/rest-layout.js"></script><script src="/bomb-physics.js"></script><script src="/app.js"></script></body></html>

@@ -1,9 +1,9 @@
 {
   "name": "KIC Message Board",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:22-bookworm",
-  "forwardPorts": [3000],
+  "forwardPorts": [3017],
   "portsAttributes": {
-    "3000": {
+    "3017": {
       "label": "KIC Message Board",
       "onAutoForward": "notify"
     }
