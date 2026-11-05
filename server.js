@@ -3,6 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {randomUUID} = require('node:crypto');
 const restLayout=require('./public/rest-layout');
+const bombPhysics=require('./public/bomb-physics');
 const file = path.join(__dirname, 'data.json');
 const seeds = [
  ['Mina','A little courage for anyone starting something new.','sun','#f3ba65'],
@@ -20,14 +21,27 @@ function createApp(dataFile=file){
  let state; try {state=JSON.parse(fs.readFileSync(dataFile,'utf8'));}catch{state=initial();}
  state.posts.forEach((p,i)=>{if(!validRest(p.rest))p.rest={x:i%3*.38+.12,y:Math.floor(i/3)%3*.32+.18};});
  state.bombs=[];let bombAvailableAt=0;
+ // The server owns knockback in normalized resting-area coordinates.
+ const motions=new Map(),impacted=new Set(),walls={left:0,right:1,top:0,bottom:1};
+ const advanceAll=time=>{for(const[id,m]of motions){const p=state.posts.find(p=>p.id===id);if(!p||p.respawnAt>time||p.rest.x!==m.homeX||p.rest.y!==m.homeY){motions.delete(id);continue;}bombPhysics.advance(m,time,walls);if(m.done)motions.delete(id);}};
+ function advanceWorld(time){
+  for(const b of state.bombs){if(b.impactAt>time||impacted.has(b.id))continue;advanceAll(b.impactAt);impacted.add(b.id);
+   for(const p of state.posts){if(p.respawnAt>b.impactAt)continue;const prior=motions.get(p.id),x=prior?.x??p.rest.x,y=prior?.y??p.rest.y,dx=x-b.x,dy=y-b.y,d=Math.hypot(dx,dy);if(d>1.15)continue;
+    const angle=d<.001?(p.id.charCodeAt(0)%12)*Math.PI/6:Math.atan2(dy,dx),speed=1.9+1.8*Math.max(0,1-d/1.15);
+    motions.set(p.id,{id:p.id,bombId:b.id,homeX:p.rest.x,homeY:p.rest.y,x,y,vx:Math.cos(angle)*speed+(prior?.vx||0)*.28,vy:Math.sin(angle)*speed+(prior?.vy||0)*.28,angle:prior?.angle||0,spin:(Math.cos(angle)>0?1:-1)*180,bounces:0,lastBounceAt:0,lastWall:null,simulatedAt:b.impactAt,impactAt:b.impactAt,returnAt:b.returnAt,serverDriven:true});
+   }
+  }advanceAll(time);
+  for(const id of impacted)if(!state.bombs.some(b=>b.id===id))impacted.delete(id);
+ }
  const save=()=>fs.writeFileSync(dataFile,JSON.stringify(state));
  const json=(res,code,body)=>{res.writeHead(code,{'Content-Type':'application/json','Cache-Control':'no-store'});res.end(JSON.stringify(body));};
  return http.createServer(async(req,res)=>{
   try {
    const url=new URL(req.url,'http://localhost');
+   advanceWorld(Date.now());
    state.food=(state.food||[]).filter(f=>f.expiresAt>Date.now());
    state.bombs=state.bombs.filter(b=>b.returnAt+2000>Date.now());
-   if(url.pathname==='/api/tank'&&req.method==='GET')return json(res,200,{...state,serverTime:Date.now()});
+   if(url.pathname==='/api/tank'&&req.method==='GET')return json(res,200,{...state,motions:[...motions.values()],serverTime:Date.now()});
    if(url.pathname.startsWith('/api/')&&req.method==='POST'){
     let raw='',bytes=0; for await(const chunk of req){bytes+=chunk.length;if(bytes>250000)return json(res,413,{error:'That drawing is too large. Try a simpler sketch.'});raw+=chunk;}
     let body;try{body=JSON.parse(raw);}catch{return json(res,400,{error:'Please send valid JSON.'});}
@@ -35,7 +49,7 @@ function createApp(dataFile=file){
     if(url.pathname==='/api/bombs'){
      if(!Number.isFinite(body.x)||!Number.isFinite(body.y)||body.x<0||body.x>1||body.y<0||body.y>1)return json(res,400,{error:'Drop the bubble bomb inside the pond.'});
      if(Date.now()<bombAvailableAt)return json(res,429,{error:'Give the pond a moment to settle.'});
-     const bomb={id:randomUUID(),x:body.x,y:body.y,impactAt:Date.now()+650,returnAt:Date.now()+9150};state.bombs.push(bomb);bombAvailableAt=Date.now()+2500;return json(res,201,bomb);
+     const bomb={id:randomUUID(),x:body.x,y:body.y,impactAt:Date.now()+1200,returnAt:Date.now()+9700};state.bombs.push(bomb);bombAvailableAt=Date.now()+2500;return json(res,201,bomb);
     }
     if(url.pathname==='/api/food'){
      if(!Number.isFinite(body.x)||!Number.isFinite(body.y)||body.x<0||body.x>1||body.y<0||body.y>1)return json(res,400,{error:'Drop food inside the pond.'});
